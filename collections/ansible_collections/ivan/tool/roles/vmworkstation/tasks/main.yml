@@ -1,6 +1,0 @@
----
-# tasks file for vmworkstation
-# workstation pro install
-# workstation + license
-# set rest-api credential : C:\Program Files (x86)\VMware\VMware Workstation>vmrest - C,  then input username and password
-# openthe rest API : C:\Program Files (x86)\VMware\VMware Workstation>vmrest
