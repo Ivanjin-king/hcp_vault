@@ -1,0 +1,10 @@
+---
+- name: Nextcloud install and configuration
+  hosts: all
+  gather_facts: true
+  #vars_files: /workspaces/ccl.agents/collections/ansible_collections/ccl/agents/roles/genitic_create_group_user/vars/default_user_pwd.yml
+  collections:
+    - ivan.tool
+  roles:
+    - {role: nextcloud_aio}
+#    - {role: nextcloud_aio, become: yes}

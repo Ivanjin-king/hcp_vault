@@ -1,0 +1,38 @@
+---
+##for centos -- docker install
+- name: set mydistribution
+  ansible.builtin.set_fact:
+    mydistribution: "{{ 'centos' if (ansible_distribution == 'Rocky') else (ansible_distribution | lower) }}"
+
+- name: Add signing key
+  ansible.builtin.rpm_key:
+    key: "https://download.docker.com/tool/{{ mydistribution }}/gpg"
+    state: present
+  become: yes
+
+- name: Add repository into repo.d list
+  ansible.builtin.yum_repository:
+    name: docker
+    description: docker repository
+    baseurl: "https://download.docker.com/tool/{{ mydistribution }}/$releasever/$basearch/stable"
+    enabled: true
+    gpgcheck: true
+    gpgkey: "https://download.docker.com/tool/{{ mydistribution }}/gpg"
+  become: yes
+
+- name: Install Docker
+  ansible.builtin.yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: latest
+    update_cache: true
+  become: yes
+
+- name: Start Docker
+  ansible.builtin.service:
+    name: "docker"
+    enabled: true
+    state: started
+  become: yes

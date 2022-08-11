@@ -1,0 +1,17 @@
+---
+- name: create a container
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ docker_image }}"
+    state: started
+    restart: yes
+    ports:
+      - "{{ port1 }}"
+      - "{{ port2 }}"
+      - "{{ port3 }}"
+    volumes:
+      - "{{ volume1 }}"
+      - "{{ volume2 }}"
+  become: yes
+
+

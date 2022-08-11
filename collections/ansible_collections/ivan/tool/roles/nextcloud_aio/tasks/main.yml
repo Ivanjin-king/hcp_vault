@@ -1,0 +1,23 @@
+---
+- block:
+    - name: "set facts"
+      include_tasks: inc/set_facts.yml
+  tags:
+    - set_facts
+
+- block:
+    - name: "docker install"
+      include_tasks: ../../../roles/docker/tasks/inc/docker_install.yml
+      tags:
+        - docker_install
+
+    - name: Install requests,docker python package
+      pip:
+        name: requests,docker
+        executable: pip3.9
+      become: yes
+
+    - name: "container create"
+      include_tasks: ../../../roles/docker/tasks/inc/container_create.yml
+      tags:
+        - container_create

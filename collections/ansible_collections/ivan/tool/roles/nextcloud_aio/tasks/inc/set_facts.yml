@@ -1,0 +1,108 @@
+---
+
+- name: Linux Agent Set Facts
+  block:
+    - name: "Set privilege escalation user"
+      set_fact:
+        privileged_user: "{% if ansible_system is match('CYGWIN*|Win32NT') %}Administrator{% else %}root{% endif %}"
+
+    #Check if tenabled is running
+    - name: "Check if tenabled is running"
+      shell: "ps -ef|grep ness"
+      register: return_tenabled
+      changed_when: False
+      failed_when: False
+      ignore_errors: yes
+
+    - name: "Set tenabled_running"
+      set_fact:
+        tenabled_running: "{{ return_tenabled.stdout.find('tenabled pid') != -1 }}"
+
+    - name: print out tenabled_running
+      debug:
+        var: tenabled_running
+
+    - name: Agent Status
+      debug:
+        var: agent_status.stderr_lines
+
+    - name: "set agent_status_fact boolean, set agent_version running version"
+      set_fact:
+        agent_status_fact: "{{ agent_status.stderr_lines | regex_search('is already') !=none }}"
+        #  agent_status_fact: true means the agent is running
+        agent_version_fact: "{{ agent_version.stdout | regex_search('([0-9])+(([.])+([0-9]){1,2}){2,2}') }}"
+        agent_identifyingnumber: ""
+
+#
+#    - name: agent.enable_service.
+#      debug:
+#        var: agent.enable_service
+#    # Check if systemd is running
+#    - name: "Identify service system (Linux)"
+#      command: "ps --no-headers -o comm 1"
+#      register: pid1
+#      changed_when: False
+#      when: agent.enable_service
+#
+#    - name: "Set systemd boolean"
+#      set_fact:
+#        tenable_systemd: "{{ pid1.stdout.find('systemd') != -1 }}"
+#      when:
+#        - agent.enable_service
+#        #- ansible_system is match("Linux")
+#        -
+#    - name: If Linux agent version is desired version
+#      set_fact:
+#        old_agent_ver: false
+#      when: "agent_version_fact is in desired_agent_version"
+#    - name: Report tenable forwarder version.
+#      debug:
+#        var: old_agent_ver,agent_status_fact,agent_version_fact
+##    - name: create a CSV table
+##      include_tasks:
+##        file: "inc/common_task/create_a_csv_file.yml"
+##        apply:
+##          become: yes
+##          become_user: "{{ privileged_user }}"
+#
+#    - name: Check tool os and set facts for corresponding image/package
+#      set_fact:
+#        agent_image: "{% if ansible_facts['distribution_file_variety'] =='RedHat' and ansible_facts['distribution_major_version'] =='8' %}{{ tenable_agent_redhat_8  }}{% elif ansible_facts['distribution_file_variety'] =='RedHat' and ansible_facts['distribution_major_version'] =='7' %}{{ tenable_agent_redhat_7  }}{% elif ansible_facts['distribution'] =='Ubuntu'  %}{{ tenable_agent_ubuntu }}{% else %}others{% endif %}"
+#    - name: report agent_image
+#      debug:
+#        var: agent_image
+
+  when: ansible_facts['system'] == 'Linux'
+
+
+- name: Windows Agent Set Facts
+  block:
+    - name: Check Installed Windows Software
+      win_command: powershell.exe get-wmiobject Win32_Product | Format-Table Version, IdentifyingNumber, Name, LocalPackage,  -AutoSize
+      register: agent_status
+
+    - name: Report Installed Software Status
+      debug:
+        var: agent_status.stdout
+
+    - name: "set agent_status_fact boolean, set agent_version running version"
+      set_fact:
+        agent_status_fact: "{{ agent_status.stdout | regex_search('(' + win_agent_name + '.*)') !=none }}"
+        agent_identifyingnumber: "{{ agent_status.stdout | regex_search('{.*(?= (' + win_agent_name + '))')}}"
+        #agent_identifyingnumber: "{{ agent_status.stdout | regex_search('(?<={).*(?=} (' + win_agent_name + '))')}}"
+        agent_version_fact: "{{ agent_status.stdout | regex_search('.*(?= {.*(' + win_agent_name + '))') }}"
+        #agent_version_fact: "{{ agent_status.stdout | regex_search('([0-9])+(([.])+([0-9]){1,2}){2,2}(?=  {.*(' + win_agent_name + '))') }}"
+
+#    - name: Agent Status
+#      debug:
+#        var: agent_status
+
+    - name: Report Agent Version.
+      debug:
+        var: agent_version_fact,agent_status_fact, agent_identifyingnumber
+
+    - name: create a CSV table
+      include_tasks:
+        file: "inc/common_task/create_a_csv_file.yml"
+
+  when: ansible_facts['system'] == 'Win32NT'
