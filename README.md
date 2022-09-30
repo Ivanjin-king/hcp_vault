@@ -6,7 +6,7 @@ The diagram initially target remote hosts/VMs for PKI automation via a CI/CD fla
 - The architecture start from following iaC principle, pipelines are triggered daily, weekly or manually to start Cert Mgmt containers via terraform first.  Apps are then loaded into container according to defined operation flows in pipeline. The containers are ephemeral, will go way once job done.
 - App of Cert Discovery only need to be performed once against each domain/group, the current state of certificates is sent to DB as source of true to be consumed by apps Cert Validity Check and Cert Deployment later .
 - App of Cert Validity Check starts to query DB on a periodic time to to find the certificates on a specific host which don't comply with security policy, eg, some certs will expire in 10 Days.
-- App Cert Discovery started to delete, renew, rebind the certificates depending on result of  app Cert Validity Check.
+- App Cert Deployment started to delete, renew, rebind the certificates depending on result of  app Cert Validity Check.
 
 ### **The challenge in V1:**
 - App Cert Discovery and Cert Deployment need to connect to many hosts maintained by various team to read/write, credentials and variables need to be protected thoroughly.  Although the secrets and variables can be stored in Git Tools and pass into apps as environment variable, a professional secret server is beneficial.
