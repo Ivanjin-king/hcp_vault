@@ -53,9 +53,9 @@ class RemoteClient():
 logging.basicConfig(filename='log.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 home_directory =os.path.expanduser('~')
-host = "10.99.3.211"
+host = "x.x.x.x"
 user = "root"
-password ="test123"
+password ="xxx"
 ssh_key_filepath = f"{home_directory}/.ssh/id_rsa"
 home_directory =os.path.expanduser('~')
 f = RemoteClient(host,user,password,ssh_key_filepath)

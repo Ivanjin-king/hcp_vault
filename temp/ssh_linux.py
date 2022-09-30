@@ -7,7 +7,7 @@ t=time.time()
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-hostname = ["10.99.3.212","10.99.3.205","10.99.3.211"]
+hostname = ["x.x.x.x"]
 username = "root"
 pwd = keyring.get_password("agt_test", "root")
 for host in hostname:
