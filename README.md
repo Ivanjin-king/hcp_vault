@@ -1,5 +1,5 @@
 This is a roadmap of a solution I recently work on, you can find why and how Hashicorp Vault, Consul and CTS are involved gradually.
-![Optional Text](../hcp_vault/temp/test.png)
+
 <img src="https://raw.githubusercontent.com/Ivanjin-king/hcp_vault/temp/test.png">
 
 The diagram initially target remote hosts/VMs for PKI automation via a CI/CD flavour in order to eliminate the massive pain of service outage in an organisation which lack the visibility of certificate validity.
