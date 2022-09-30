@@ -22,7 +22,7 @@ This is where HCP vault  in version 2(dark grey) comes through , it can resolve 
 I soon realized that this is a service mesh in the solution and this is where HCP Consul in version 3(blue) comes through to securing the mesh, facilitating service discovery, health checking, policy enforcement, and other similar operational concerns.
 
 ### **The challenge in V3:**
-- Apps in Cert mgmt containers need to reach out to an amount of remote hosts in various domain, The ports on the firewall need to be opened to allow  for access. Most company have ticket driven system, say, you create a ticket to operation, then the ticket is assigned to an engineer in security team who then manually configure the firewall as required.
+- Apps in Cert mgmt containers need to reach out to an amount of remote hosts in various domain, The ports on the firewall need to be opened to allow  for access. Most company have ticket driven system, say, you create a ticket to operation, then the ticket is assigned to an engineer in security team who then manually configure the firewall as required. The process usually takes long long time,consume valuable resources, and increase human errors.
 This is where CTS (Consul-Terraform-Sync) in version 4(red)comes through that can automate firewall change base on info on Consul..
 
 I'm currently working on V4, looking forward to see V5 that bring some new challenge. Although this solution is talking about PKI automation solution, this is a common platform/ framework for other solutions, you just need to replace the apps in the container.
