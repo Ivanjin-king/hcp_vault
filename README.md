@@ -1,6 +1,6 @@
 This is a roadmap of a solution I recently work on, you can find why and how Hashicorp Vault, Consul and CTS are involved gradually.
 
-<img src="https://raw.githubusercontent.com/Ivanjin-king/hcp_vault/temp/test.png">
+<img src="https://raw.githubusercontent.com/Ivanjin-king/hcp_vault/master/temp/test.png">
 
 The diagram initially target remote hosts/VMs for PKI automation via a CI/CD flavour in order to eliminate the massive pain of service outage in an organisation which lack the visibility of certificate validity.
 - The architecture start from following iaC principle, pipelines are triggered daily, weekly or manually to start Cert Mgmt containers via terraform first.  Apps are then loaded into container according to defined operation flows in pipeline. The containers are ephemeral, will go way once job done.
